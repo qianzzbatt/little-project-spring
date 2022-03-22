@@ -2,14 +2,31 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:aop="http://www.springframework.org/schema/aop"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans.xsd
 	http://www.springframework.org/schema/context
-	http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd">
+	http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/aop https://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <mvc:interceptors>
+        <!-- 配置第1个拦截器 -->
+        <mvc:interceptor>
+            <!-- 指定拦截路径，不在拦截路径之内的将不予处理，即拦截器根本就不运行 -->
+            <mvc:mapping path="/**"/>
+            <!-- 指定拦截忽略路径，登录，jdbcDemoController，healthController不需要判断是否登录 -->
+            <mvc:exclude-mapping path="/consumer/login"/>
+            <mvc:exclude-mapping path="/demo/**"/>
+            <mvc:exclude-mapping path="/"/>
+            <!-- 指定拦截器类 -->
+            <bean class="com.ruyuan.little.project.spring.interceptor.LoginInterceptor" />
+        </mvc:interceptor>
+    </mvc:interceptors>
 
     <!-- 扫描web相关的bean -->
     <context:component-scan base-package="com.ruyuan.little.project.spring"/>
+
+    <!-- 启动对@AspectJ注解的支持 -->
+    <aop:aspectj-autoproxy proxy-target-class="false"/>
 
     <!-- 返回数据解析，可以直接返回Object   -->
     <mvc:annotation-driven>
