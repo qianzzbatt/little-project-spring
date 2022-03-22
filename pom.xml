@@ -17,6 +17,7 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <spring.version>5.2.6.RELEASE</spring.version>
         <jackson.version>2.12.2</jackson.version>
+        <spring-aspects.version>5.3.12</spring-aspects.version>
     </properties>
 
     <!--私服地址-->
@@ -32,7 +33,12 @@
     </repositories>
 
     <dependencies>
-
+        <!-- tomcat依赖 -->
+        <dependency>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-core</artifactId>
+            <version>8.5.77</version>
+        </dependency>
         <!-- 小实战项目的公共依赖 -->
         <dependency>
             <groupId>com.ruyuan2020.little.project</groupId>
@@ -89,6 +95,33 @@
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
             <version>1.2.3</version>
+        </dependency>
+        <!-- 引入 aspectJ AOP-->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-aop</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-aspects</artifactId>
+            <version>${spring-aspects.version}</version>
+        </dependency>
+        <!-- json依赖 -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.75</version>
         </dependency>
     </dependencies>
     <build>
