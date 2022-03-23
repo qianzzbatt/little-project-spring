@@ -27,7 +27,7 @@ public class LoginInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
                              Object handler) throws Exception {
         // 判断请求中是否包含手机号，先从请求体中获取
-        String phoneNumber = request.getParameter("phoneNumber");
+/*        String phoneNumber = request.getParameter("phoneNumber");
         if (StringUtils.isEmpty(phoneNumber)) {
             // 再从请求头中获取
             phoneNumber = request.getHeader("phoneNumber");
@@ -46,7 +46,7 @@ public class LoginInterceptor implements HandlerInterceptor {
                 }
                 return false;
             }
-        }
+        }*/
         logger.debug("LoginInterceptor.preHandle()");
         return true;
     }

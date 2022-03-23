@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!-- 导入配置文件 -->
+    <context:property-placeholder location="classpath:jdbc.properties"/>
+
+<!--定义jdbcBaseDao-->
+    <bean id="jdbcBaseDao" class="com.ruyuan.little.project.spring.dao.JdbcBaseDao">
+        <property name="driverClassName" value="${jdbc.driverClassName}"/>
+        <property name="url" value="${jdbc.url}" />
+        <property name="username" value="${jdbc.username}" />
+        <property name="password" value="${jdbc.password}" />
+    </bean>
+
+    <!-- &lt;!&ndash;     原始方式定义DataSource 不使用连接池 &ndash;&gt;
+            <bean id="dataSource"
+                  class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+                <property name="driverClassName" value="${jdbc.driverClassName}" />
+                <property name="url" value="${jdbc.url}" />
+                <property name="username" value="${jdbc.username}" />
+                <property name="password" value="${jdbc.password}" />
+            </bean>-->
+
+    <!-- 数据库连接池 -->
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="clone">
+        <property name="driverClassName" value="${jdbc.driverClassName}"/>
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+        <!-- 配置初始化大小、最小、最大 -->
+        <!-- 通常来说，只需要修改initialSize、minIdle、maxActive -->
+        <!-- 初始化时建立物理连接的个数，缺省值为0 -->
+        <property name="initialSize" value="5"/>
+        <!-- 最小连接池数量 -->
+        <property name="minIdle" value="5"/>
+        <!-- 最大连接池数量，缺省值为8 -->
+        <property name="maxActive" value="20"/>
+        <!-- 获取连接时最大等待时间，单位毫秒。配置了maxWait之后，缺省启用公平锁，并发效率会有所下降，如果需要可以通过配置useUnfairLock属性为true使用非公平锁。 -->
+        <property name="maxWait" value="60000"/>
+        <!-- 添加此处作用是为了在SQL监控页面显示sql执行语句，不配置不显示 -->
+        <property name="filters" value="stat,wall" />
+    </bean>
+
+    <!-- 定义jdbcDruidBaseDao 通过构造函数注入 -->
+    <bean id="jdbcDruidBaseDao" class="com.ruyuan.little.project.spring.dao.JdbcDruidBaseDao">
+        <constructor-arg name="dataSource" ref="dataSource" />
+    </bean>
+
+    <!-- 定义jdbcTemplate -->
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+    <!-- 定义templateBaseDao -->
+    <bean id="templateBaseDao" class="com.ruyuan.little.project.spring.dao.JdbcTemplateBaseDao">
+        <property name="jdbcTemplate" ref="jdbcTemplate" />
+    </bean>
+
+
+</beans>
