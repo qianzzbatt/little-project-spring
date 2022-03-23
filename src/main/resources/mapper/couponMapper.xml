@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruyuan.little.project.spring.mapper.CouponMapper">
+
+    <select id="findById" resultType="com.ruyuan.little.project.spring.dto.Coupon">
+        select * from t_coupon where id = #{id}
+    </select>
+
+    <select id="getPage" parameterType="com.ruyuan.little.project.spring.dto.Coupon"
+            resultType="com.ruyuan.little.project.spring.dto.Coupon">
+        select * from t_coupon
+        where 1 = 1
+        <if test="id != null and id !=''">
+            And id = #{id}
+        </if>
+        <if test="couponName != null and couponName !=''">
+            And coupon_name = #{couponName}
+        </if>
+        <if test="phone != null and phone !=''">
+            And phone = #{phone}
+        </if>
+        <if test="openId != null and openId !=''">
+            And open_id = #{openId}
+        </if>
+        <if test="credits != null and credits !='' and credits >0">
+            And credits = #{credits}
+        </if>
+        <if test="orderTimes != null and orderTimes !='' and orderTimes >0">
+            And order_times = #{orderTimes}
+        </if>
+        <if test="totalPrices != null and totalPrices !='' and totalPrices >0">
+            And total_prices = #{totalPrices}
+        </if>
+        <if test="sex != null and sex !=''">
+            And sex = #{sex}
+        </if>
+        <if test="birthday != null and birthday !=''">
+            And birthday = #{birthday}
+        </if>
+        limit #{startIndex},#{endIndex}
+    </select>
+
+    <insert id="add" parameterType="com.ruyuan.little.project.spring.dto.Coupon">
+        INSERT INTO t_coupon
+        (id, coupon_name, phone, credits, sex, birthday, order_times,
+         total_prices, open_id, email, address)
+        VALUES (#{id},#{couponName},#{phone},#{credits},#{sex},#{birthday},
+                #{orderTimes},#{totalPrices},#{openId},#{email},#{address});
+    </insert>
+
+    <update id="updateStatusById">
+        update t_consumer_coupon set status = #{status} where id = #{id}
+    </update>
+
+    <insert id="receiveCoupon" parameterType="com.ruyuan.little.project.spring.dto.ConsumerCoupon"
+            useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO
+            t_consumer_coupon(
+            consumer_id,
+            consumer_name,
+            coupon_id,
+            coupon_name,
+            status,
+            amount,
+            create_time,
+            expire_time)
+        values(
+                  #{consumerId},
+                  #{consumerName},
+                  #{couponId},
+                  #{couponName},
+                  #{status},
+                  #{amount},
+                  #{createTime},
+                  #{expireTime})
+    </insert>
+
+    <select id="countByIdAndLikeTime" resultType="Integer">
+        select count(1) from t_consumer_coupon
+        where coupon_id = #{id} and create_time like concat(#{time},'%')
+    </select>
+</mapper>
