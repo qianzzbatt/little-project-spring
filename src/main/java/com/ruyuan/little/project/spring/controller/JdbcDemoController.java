@@ -6,6 +6,7 @@ import com.ruyuan.little.project.spring.dao.JdbcDruidBaseDao;
 import com.ruyuan.little.project.spring.dao.JdbcTemplateBaseDao;
 import com.ruyuan.little.project.spring.dto.Teacher;
 import com.ruyuan.little.project.spring.expection.BusinessException;
+import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,9 @@ public class JdbcDemoController {
 
     @Resource
     private JdbcTemplateBaseDao jdbcTemplateBaseDao;
+
+    @Resource
+    private SqlSession sqlSession;
 
     @GetMapping("/jdbc/all")
     public CommonResponse GetAll(){
@@ -68,6 +72,17 @@ public class JdbcDemoController {
         List list = null;
         try {
             list = jdbcTemplateBaseDao.templateQuery(sql, null);
+        } catch (Exception e) {
+            throw  new BusinessException("查询教师列表失败");
+        }
+        return CommonResponse.success(list);
+    }
+
+    @GetMapping("/mybatis/all")
+    public CommonResponse mybatisGetAll(){
+        List list = null;
+        try {
+            list = sqlSession.selectList("com.ruyuan.little.project.spring.mapper.TeacherMapper.selectAll");
         } catch (Exception e) {
             throw  new BusinessException("查询教师列表失败");
         }
