@@ -22,6 +22,9 @@
         </mvc:interceptor>
     </mvc:interceptors>
 
+    <!-- 加载properties配置文件   -->
+    <context:property-placeholder location="classpath:*.properties" ignore-unresolvable="true" />
+
     <!-- 扫描web相关的bean -->
     <context:component-scan base-package="com.ruyuan.little.project.spring"/>
 

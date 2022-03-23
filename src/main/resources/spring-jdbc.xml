@@ -4,9 +4,6 @@
        xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
 
-    <!-- 导入配置文件 -->
-    <context:property-placeholder location="classpath:jdbc.properties"/>
-
 <!--定义jdbcBaseDao-->
     <bean id="jdbcBaseDao" class="com.ruyuan.little.project.spring.dao.JdbcBaseDao">
         <property name="driverClassName" value="${jdbc.driverClassName}"/>
@@ -58,5 +55,28 @@
         <property name="jdbcTemplate" ref="jdbcTemplate" />
     </bean>
 
+    <!--  mybatis相关配置  -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <!-- 注入连接池 -->
+        <property name="dataSource" ref="dataSource"/>
+        <!-- 定义mybatis的mapper文件扫描路径 -->
+        <property name="mapperLocations" value="classpath*:mapper/*Mapper.xml"/>
+        <!-- 定义mybatis的中实体类的路径 -->
+        <property name="typeAliasesPackage" value="com.ruyuan.little.project.spring.dto"/>
+        <!-- 加载mybatis配置文件 -->
+        <property name="configLocation" value="classpath:mybatis-config.xml" />
+    </bean>
+
+    <!-- 获取 SqlSession 对象，并交由 spring 管理  用SqlSessionTemplate得到的SqlSession可以不用我们自己操心事务的管理，以及关闭操作-->
+    <bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+        <!-- 给 SqlSessionTemplate 的构造函数赋值-->
+        <constructor-arg index="0" ref="sqlSessionFactory" />
+    </bean>
+
+    <!-- 定义mapper扫描包 -->
+    <bean id="scannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <!-- name="basePackage":(起始)包名, 从这个包开始扫描-->
+        <property name="basePackage" value="com.ruyuan.little.project.spring.mapper"/>
+    </bean>
 
 </beans>
