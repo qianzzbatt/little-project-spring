@@ -3,10 +3,11 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:cache="http://www.springframework.org/schema/cache" xmlns:p="http://www.springframework.org/schema/p"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans.xsd
 	http://www.springframework.org/schema/context
-	http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/aop https://www.springframework.org/schema/aop/spring-aop.xsd">
+	http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/aop https://www.springframework.org/schema/aop/spring-aop.xsd http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd">
 
     <mvc:interceptors>
         <!-- 配置第1个拦截器 -->
@@ -37,5 +38,20 @@
             <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"/>
         </mvc:message-converters>
     </mvc:annotation-driven>
+
+    <!-- 配置缓存key生成器 -->
+    <bean id="teacherKeyGenerator" class="com.ruyuan.little.project.spring.cache.TeacherKeyGenerator"></bean>
+    <cache:annotation-driven cache-manager="cacheManager"/>
+    <!-- 缓存 -->
+    <bean id="cacheManager" class="org.springframework.cache.support.SimpleCacheManager">
+        <!-- 配置缓存区 -->
+        <property name="caches">
+            <set>
+                <!-- 使用ConcurrentMapCacheFactoryBean配置缓存区 下面列出多个缓存区，p:name用于为缓存区指定名字 -->
+                <bean class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean" p:name="default"/>
+                <bean class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean" p:name="teacher"/>
+            </set>
+        </property>
+    </bean>
 
 </beans>
