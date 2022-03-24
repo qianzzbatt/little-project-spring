@@ -2,7 +2,10 @@ package com.ruyuan.little.project.spring.service.impl;
 
 import com.ruyuan.little.project.spring.dto.Consumer;
 import com.ruyuan.little.project.spring.dto.ConsumerCoupon;
+import com.ruyuan.little.project.spring.dto.Order;
+import com.ruyuan.little.project.spring.enums.EducationBusinessErrorCodeEnum;
 import com.ruyuan.little.project.spring.event.LogonEventPublisher;
+import com.ruyuan.little.project.spring.expection.BusinessException;
 import com.ruyuan.little.project.spring.mapper.ConsumerMapper;
 import com.ruyuan.little.project.spring.service.ConsumerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,4 +78,19 @@ public class ConsumerServiceImpl implements ConsumerService {
     public List<ConsumerCoupon> findCouponByConsumerIdAndStatus(Integer id, String status) {
         return consumerMapper.findCouponByConsumerIdAndStatus(id,status);
     }
+
+    @Override
+    public int orderCreateInformDeductCredits(Order order) {
+        if (order.getDeductCredits() <= 0) {
+            return 0;
+        }
+        Consumer consumer = consumerMapper.findById(order.getConsumerId());
+        if (consumer.getCredits() < order.getDeductCredits()) {
+            throw new BusinessException(EducationBusinessErrorCodeEnum.CREDITS_NOT_ENOUGH.getMsg());
+        }
+        return consumerMapper.deductCredits(order.getDeductCredits(), order.getConsumerId());
+    }
+
+
+
 }

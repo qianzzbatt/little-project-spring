@@ -2,6 +2,7 @@ package com.ruyuan.little.project.spring.service;
 
 import com.ruyuan.little.project.spring.dto.Consumer;
 import com.ruyuan.little.project.spring.dto.ConsumerCoupon;
+import com.ruyuan.little.project.spring.dto.Order;
 
 import java.util.List;
 
@@ -67,5 +68,13 @@ public interface ConsumerService {
      * @return 结果
      */
     List<ConsumerCoupon> findCouponByConsumerIdAndStatus(Integer id, String status);
+
+    /**
+     * 下单通知扣减积分
+     *
+     * @param order 订单信息
+     * @return 结果
+     */
+    int orderCreateInformDeductCredits(Order order);
 
 }

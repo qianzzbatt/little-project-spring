@@ -33,12 +33,12 @@ public class TeacherKeyGenerator implements KeyGenerator {
                     ((Teacher) objects[0]).getTeacherName() + DASH + ((Teacher) objects[0]).getCourse() + DASH +
                     ((Teacher) objects[0]).getStatus() + DASH + ((Teacher) objects[0]).getStartIndex() + DASH +
                     ((Teacher) objects[0]).getEndIndex() + DASH + objects[1] + DASH + objects[2];
-            LOGGER.info("生成的缓存key:{}",key);
+            LOGGER.info("生成的缓存key:{}", key);
             return key;
         }
         String key = o.getClass().getSimpleName() + DASH + method.getName() +
                 DASH + StringUtils.arrayToDelimitedString(objects, DASH);
-        LOGGER.info("生成的缓存key:{}",key);
+        LOGGER.info("生成的缓存key:{}", key);
         return key;
     }
 }

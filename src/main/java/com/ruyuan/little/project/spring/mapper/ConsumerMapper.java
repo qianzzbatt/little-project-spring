@@ -43,18 +43,18 @@ public interface ConsumerMapper {
      */
     Consumer findById(int id);
 
-/*
-    *//**
+
+    /**
      * 扣减积分
      *
      * @param deductCredits 积分
      * @param consumerId    消费者id
      * @return 结果
-     *//*
+     */
     int deductCredits(@Param(value = "deductCredits") Integer deductCredits,
                       @Param(value = "consumerId") Integer consumerId);
 
-    *//**
+    /* *//**
      * 回退积分
      *
      * @param deductCredits 积分

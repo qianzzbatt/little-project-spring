@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruyuan.little.project.spring.mapper.OrderMapper">
+
+    <select id="findById" resultType="com.ruyuan.little.project.spring.dto.Order">
+        select * from t_order where id = #{id}
+    </select>
+
+    <resultMap type="com.ruyuan.little.project.spring.dto.Order" id="orderCommentResultMap">
+        <id column="id" property="id"/>
+        <result column="consumer_id" property="consumerId"/>
+        <result column="consumer_name" property="consumerName"/>
+        <result column="teacher_id" property="teacherId"/>
+        <result column="teacher_name" property="teacherName"/>
+        <result column="course" property="course"/>
+        <result column="start_date" property="startDate"/>
+        <result column="end_date" property="endDate"/>
+        <result column="create_time" property="createTime"/>
+        <result column="pay_time" property="payTime"/>
+        <result column="cancel_time" property="cancelTime"/>
+        <result column="finish_time" property="finishTime"/>
+        <result column="price_of_day" property="priceOfDay"/>
+        <result column="between_day" property="betweenDay"/>
+        <result column="total_prices" property="totalPrices"/>
+        <result column="deduct_credits" property="deductCredits"/>
+        <result column="consumer_coupon_id" property="consumerCouponId"/>
+        <result column="coupon_amount" property="couponAmount"/>
+        <result column="credits_amount" property="creditsAmount"/>
+        <result column="pay_amount" property="payAmount"/>
+        <result column="pay_channel" property="payChannel"/>
+        <result column="receive_credits" property="receiveCredits"/>
+        <result column="receive_coupon_id" property="receiveCouponId"/>
+        <result column="status" property="status"/>
+        <result column="comment_id" property="commentId"/>
+        <!-- 订单关联评论 -->
+        <association property="comment" javaType="com.ruyuan.little.project.spring.dto.Comment">
+            <id column="comment_id" property="id"/>
+            <result column="comment_order_id" property="orderId"/>
+            <result column="comment_score" property="score"/>
+            <result column="comment_comment_content" property="commentContent"/>
+            <result column="comment_status" property="status"/>
+            <result column="comment_consumer_id" property="consumerId"/>
+            <result column="comment_teacher_id" property="teacherId"/>
+            <result column="comment_create_time" property="createTime"/>
+            <result column="comment_adopt_time" property="adoptTime"/>
+            <result column="comment_reject_time" property="rejectTime"/>
+        </association>
+    </resultMap>
+
+    <select id="getPage" parameterType="com.ruyuan.little.project.spring.dto.Order"
+            resultType="com.ruyuan.little.project.spring.dto.Order">
+        select * from t_order
+        where 1 = 1
+        <if test="id != null and id !=''">
+            And id = #{id}
+        </if>
+        <if test="consumerId != null and consumerId !=''">
+            And consumer_id = #{consumerId}
+        </if>
+        <if test="consumerName != null and consumerName !=''">
+            And consumer_name = #{consumerName}
+        </if>
+        <if test="teacherId != null and teacherId !=''">
+            And teacher_id = #{teacherId}
+        </if>
+        <if test="teacherName != null and teacherName !=''">
+            And teacher_name like concat('%',#{teacherName},'%')
+        </if>
+        <if test="course != null and course !=''">
+            And course = #{course}
+        </if>
+        <if test="priceOfDay != null and priceOfDay !='' and priceOfDay >0">
+            And price_of_day = #{priceOfDay}
+        </if>
+
+        <if test="betweenDay != null and betweenDay !='' and betweenDay >0">
+            And between_day = #{betweenDay}
+        </if>
+        <if test="status != null and status !=''">
+            And status = #{status}
+        </if>
+        <if test="totalPrices != null and totalPrices !='' and totalPrices >0">
+            And total_prices = #{totalPrices}
+        </if>
+        limit #{startIndex},#{endIndex}
+    </select>
+
+    <select id="getPageTotal" parameterType="com.ruyuan.little.project.spring.dto.Order" resultType="Integer">
+        select count(1) from t_order
+        where 1 = 1
+        <if test="id != null and id !=''">
+            And id = #{id}
+        </if>
+        <if test="consumerId != null and consumerId !=''">
+            And consumer_id = #{consumerId}
+        </if>
+        <if test="consumerName != null and consumerName !=''">
+            And consumer_name = #{consumerName}
+        </if>
+        <if test="teacherId != null and teacherId !=''">
+            And teacher_id = #{teacherId}
+        </if>
+        <if test="teacherName != null and teacherName !=''">
+            And teacher_name like concat('%',#{teacherName},'%')
+        </if>
+        <if test="course != null and course !=''">
+            And course = #{course}
+        </if>
+        <if test="priceOfDay != null and priceOfDay !='' and priceOfDay >0">
+            And price_of_day = #{priceOfDay}
+        </if>
+
+        <if test="betweenDay != null and betweenDay !='' and betweenDay >0">
+            And between_day = #{betweenDay}
+        </if>
+        <if test="status != null and status !=''">
+            And status = #{status}
+        </if>
+        <if test="totalPrices != null and totalPrices !='' and totalPrices >0">
+            And total_prices = #{totalPrices}
+        </if>
+    </select>
+
+    <insert id="add" parameterType="com.ruyuan.little.project.spring.dto.Order" useGeneratedKeys="true"
+            keyProperty="id">
+        INSERT INTO t_order
+        (consumer_id, consumer_name, teacher_id, teacher_name, course, start_date,
+         end_date, create_time, pay_time, cancel_time, finish_time, price_of_day,
+         between_day, total_prices, deduct_credits, consumer_coupon_id, coupon_amount,
+         credits_amount, pay_amount, pay_channel, receive_credits, receive_coupon_id,
+         status, comment_id)
+        VALUES (#{consumerId},#{consumerName},#{teacherId},#{teacherName},#{course},
+                #{startDate},#{endDate},#{createTime},#{payTime},#{cancelTime},#{finishTime},
+                #{priceOfDay},#{betweenDay},#{totalPrices},#{deductCredits},#{consumerCouponId},
+                #{couponAmount},#{creditsAmount},#{payAmount},#{payChannel},#{receiveCredits},
+                #{receiveCouponId},#{status},#{commentId})
+    </insert>
+
+    <update id="payOrder">
+        update t_order set status = #{status} ,pay_time = now() where id = #{orderId}
+    </update>
+
+    <update id="cancelOrder">
+        update t_order set status = #{status},cancel_time = now() where id = #{orderId}
+    </update>
+
+    <update id="finishOrder">
+        update t_order set status = #{status} ,finish_time = now() where id = #{orderId}
+    </update>
+
+    <update id="publishComment">
+        update t_order set comment_id = #{commentId},status = #{status} where id = #{orderId}
+    </update>
+
+    <update id="updateCommentStatusList" parameterType="List">
+        <foreach collection="list" item="item" separator=";">
+            update t_comment
+            set status = #{item.status}
+            where id = #{item.id}
+        </foreach>
+    </update>
+
+    <update id="updateOrderCountedList" parameterType="List">
+        <foreach collection="list" item="item" separator=";">
+            update t_order
+            set counted = #{item.counted}
+            where id = #{item.id}
+        </foreach>
+    </update>
+</mapper>

@@ -91,4 +91,7 @@
     <select id="findCouponByConsumerIdAndStatus" resultType="com.ruyuan.little.project.spring.dto.ConsumerCoupon">
         select * from t_consumer_coupon where consumer_id = #{id} and status = #{status} order by create_time desc
     </select>
+
+
+
 </mapper>
