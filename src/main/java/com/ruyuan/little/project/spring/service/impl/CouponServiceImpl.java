@@ -1,8 +1,11 @@
 package com.ruyuan.little.project.spring.service.impl;
 
+import com.ruyuan.little.project.spring.dto.ConsumerCoupon;
 import com.ruyuan.little.project.spring.dto.Coupon;
 import com.ruyuan.little.project.spring.dto.Order;
 import com.ruyuan.little.project.spring.enums.ConsumerCouponStatusEnum;
+import com.ruyuan.little.project.spring.enums.EducationBusinessErrorCodeEnum;
+import com.ruyuan.little.project.spring.expection.BusinessException;
 import com.ruyuan.little.project.spring.mapper.CouponMapper;
 import com.ruyuan.little.project.spring.service.CouponService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,4 +51,24 @@ public class CouponServiceImpl implements CouponService {
         }
         return couponMapper.updateStatusById(order.getConsumerCouponId(), ConsumerCouponStatusEnum.USED.getStatus());
     }
+
+    @Override
+    public int orderCancelUpdateCouponStatus(Order order) {
+        return couponMapper.updateStatusById(order.getConsumerCouponId(), ConsumerCouponStatusEnum.NOT_USED.getStatus());
+    }
+
+    @Override
+    public int orderFinishReceiverCoupon(Order order) {
+        Integer receiveCouponId = order.getReceiveCouponId();
+        if (Objects.isNull(receiveCouponId)) {
+            return 0;
+        }
+        Coupon coupon = couponMapper.findById(receiveCouponId);
+        if (coupon == null) {
+            throw new BusinessException(EducationBusinessErrorCodeEnum.COUPON_NOT_EXISTS.getMsg());
+        }
+        ConsumerCoupon consumerCoupon = new ConsumerCoupon(order, coupon);
+        return couponMapper.receiveCoupon(consumerCoupon);
+    }
+
 }

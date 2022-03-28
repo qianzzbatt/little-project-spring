@@ -92,6 +92,19 @@
         select * from t_consumer_coupon where consumer_id = #{id} and status = #{status} order by create_time desc
     </select>
 
+    <update id="unDeductCredits">
+        update t_consumer set credits = credits + #{deductCredits} where id = #{consumerId}
+    </update>
+
+    <update id="deductCredits">
+        update t_consumer set credits = credits - #{deductCredits} where id = #{consumerId}
+    </update>
+
+    <update id="receiveCredits">
+        update t_consumer set credits = credits + #{receiveCredits} where id = #{consumerId}
+    </update>
+
+
 
 
 </mapper>

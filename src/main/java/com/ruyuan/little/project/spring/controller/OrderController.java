@@ -73,4 +73,54 @@ public class OrderController {
     }
 
 
+    /**
+     * 撤销订单
+     *
+     * @param orderId 订单id
+     * @return 结果
+     */
+    @RequestMapping("/cancel")
+    public CommonResponse cancelOrder(Integer orderId) {
+        return CommonResponse.success(orderService.cancelOrder(orderId));
+    }
+
+    /**
+     * 支付订单
+     *
+     * @param orderId 订单id
+     * @return 结果
+     */
+    @RequestMapping("/pay")
+    public CommonResponse payOrder(Integer orderId) {
+        return CommonResponse.success(orderService.payOrder(orderId));
+    }
+
+    /**
+     * 结束订单
+     *
+     * @param orderId 订单id
+     * @return 结果
+     */
+    @RequestMapping("/finish")
+    public CommonResponse finishOrder(Integer orderId) {
+        return CommonResponse.success(orderService.finishOrder(orderId));
+    }
+
+    /**
+     * 订单发布评论
+     *
+     * @param orderId        订单id
+     * @param score          评价
+     * @param commentContent 评论信息
+     * @return 结果
+     */
+    @RequestMapping("/comment")
+    public CommonResponse publishComment(Integer orderId,
+                                         Integer score,
+                                         String commentContent) {
+        int publishComment = orderService.publishComment(orderId, score, commentContent);
+        return CommonResponse.success(orderId);
+    }
+
+
 }

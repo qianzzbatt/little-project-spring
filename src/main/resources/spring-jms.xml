@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- 订单消息Listener-->
+    <bean id="orderMessageListener" class="com.ruyuan.little.project.spring.jms.OrderMessageListener" />
+
+    <!-- 订单消息消费者配置-->
+    <bean id="mqConsumerConfiguration" class="com.ruyuan.little.project.spring.jms.MqConsumerConfiguration" init-method="init" destroy-method="destroy">
+        <constructor-arg name="nameServerAddr" value="${rocketmq.namesrv.address}"/>
+        <constructor-arg name="consumerGroupName" value="${rocketmq.order.consumer.group}"/>
+        <constructor-arg name="topicName" value="${rocketmq.order.topic}" />
+        <constructor-arg name="orderMessageListener" ref="orderMessageListener" />
+    </bean>
+
+    <!-- 订单延时消息Listener-->
+    <bean id="orderDelayMessageListener" class="com.ruyuan.little.project.spring.jms.OrderDelayMessageListener" />
+
+    <!-- 订单延时消息消费者配置-->
+    <bean id="mqDelayConsumerConfiguration" class="com.ruyuan.little.project.spring.jms.MqDelayConsumerConfiguration" init-method="init" destroy-method="destroy">
+        <constructor-arg name="nameServerAddr" value="${rocketmq.namesrv.address}"/>
+        <constructor-arg name="delayConsumerGroup" value="${rocketmq.order.delay.consumer.group}"/>
+        <constructor-arg name="delayTopicName" value="${rocketmq.order.delay.topic}" />
+        <constructor-arg name="orderDelayMessageListener" ref="orderDelayMessageListener" />
+    </bean>
+
+    <!-- 订单消息生产者配置-->
+    <bean id="mqProducerConfiguration" class="com.ruyuan.little.project.spring.jms.MqProducerConfiguration" init-method="init" destroy-method="destroy">
+        <constructor-arg name="nameServerAddr" value="${rocketmq.namesrv.address}"/>
+        <constructor-arg name="producerGroupName" value="${rocketmq.order.producer.group}"/>
+    </bean>
+
+    <!-- 登录消息Listener-->
+    <bean id="loginMessageListener" class="com.ruyuan.little.project.spring.jms.LoginMessageListener" />
+
+    <!-- 登录消息消费者配置-->
+    <bean id="loginConsumerConfiguration" class="com.ruyuan.little.project.spring.jms.LoginConsumerConfiguration"
+          init-method="init" destroy-method="destroy">
+        <constructor-arg name="nameServerAddr" value="${rocketmq.namesrv.address}"/>
+        <constructor-arg name="consumerGroupName" value="${rocketmq.login.consumer.group}"/>
+        <constructor-arg name="topicName" value="${rocketmq.login.topic}" />
+        <constructor-arg name="loginMessageListener" ref="loginMessageListener" />
+    </bean>
+    <!-- 登录消息生产者配置-->
+    <bean id="loginProducerConfiguration" class="com.ruyuan.little.project.spring.jms.LoginProducerConfiguration"
+          init-method="init" destroy-method="destroy">
+        <constructor-arg name="nameServerAddr" value="${rocketmq.namesrv.address}"/>
+        <constructor-arg name="producerGroupName" value="${rocketmq.login.producer.group}"/>
+    </bean>
+</beans>

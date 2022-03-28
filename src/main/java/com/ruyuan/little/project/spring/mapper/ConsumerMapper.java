@@ -54,25 +54,25 @@ public interface ConsumerMapper {
     int deductCredits(@Param(value = "deductCredits") Integer deductCredits,
                       @Param(value = "consumerId") Integer consumerId);
 
-    /* *//**
+    /**
      * 回退积分
      *
      * @param deductCredits 积分
      * @param consumerId    消费者id
      * @return 结果
-     *//*
+     */
     int unDeductCredits(@Param(value = "deductCredits") Integer deductCredits,
                         @Param(value = "consumerId") Integer consumerId);
 
-    *//**
+    /**
      * 派发积分
      *
      * @param receiveCredits 派发积分数量
      * @param consumerId     消费者id
      * @return 影响行数
-     *//*
+     */
     int receiveCredits(@Param(value = "receiveCredits") Integer receiveCredits,
-                       @Param(value = "consumerId") Integer consumerId);*/
+                       @Param(value = "consumerId") Integer consumerId);
 
     /**
      * 更新登录次数

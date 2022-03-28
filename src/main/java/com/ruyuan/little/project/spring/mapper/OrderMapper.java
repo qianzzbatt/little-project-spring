@@ -1,6 +1,7 @@
 package com.ruyuan.little.project.spring.mapper;
 
 import com.ruyuan.little.project.spring.dto.Order;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -42,5 +43,42 @@ public interface OrderMapper {
      * @return 总条数
      */
     int getPageTotal(Order order);
+
+    /**
+     * 订单取消
+     *
+     * @param orderId 订单编号
+     * @param status  状态
+     * @return 操作结果
+     */
+    int cancelOrder(@Param("orderId") Integer orderId, @Param("status") String status);
+
+    /**
+     * 订单支付
+     *
+     * @param orderId 订单编号
+     * @param status  状态
+     * @return 操作结果
+     */
+    int payOrder(@Param("orderId") Integer orderId, @Param("status") String status);
+
+    /**
+     * 订单评论
+     *
+     * @param commentId 评论id
+     * @param status    状态
+     * @param orderId   订单id
+     * @return 影响行数
+     */
+    int publishComment(@Param("commentId") Integer commentId, @Param("status") String status, @Param("orderId") Integer orderId);
+
+    /**
+     * 订单完成
+     *
+     * @param orderId 订单编号
+     * @param status  状态
+     * @return 操作结果
+     */
+    int finishOrder(@Param("orderId") Integer orderId, @Param("status") String status);
 
 }

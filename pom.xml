@@ -166,6 +166,13 @@
             <version>6.1.7.Final</version>
         </dependency>
 
+        <!-- 引入rocketmq -->
+        <dependency>
+            <groupId>org.apache.rocketmq</groupId>
+            <artifactId>rocketmq-client</artifactId>
+            <version>4.7.0</version>
+        </dependency>
+
 
     </dependencies>
     <build>

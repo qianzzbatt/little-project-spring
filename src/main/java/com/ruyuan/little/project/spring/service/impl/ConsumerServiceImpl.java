@@ -8,6 +8,7 @@ import com.ruyuan.little.project.spring.event.LogonEventPublisher;
 import com.ruyuan.little.project.spring.expection.BusinessException;
 import com.ruyuan.little.project.spring.mapper.ConsumerMapper;
 import com.ruyuan.little.project.spring.service.ConsumerService;
+import com.ruyuan.little.project.spring.service.LoginEventManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,6 +35,9 @@ public class ConsumerServiceImpl implements ConsumerService {
     @Resource
     private ConsumerMapper consumerMapper;
 
+    @Resource
+    private LoginEventManager loginEventManager;
+
     @Override
     public List<Consumer> getPage(Consumer consumer) {
         return consumerMapper.getPage(consumer);
@@ -54,8 +58,10 @@ public class ConsumerServiceImpl implements ConsumerService {
             consumerMapper.add(consumer);
             findConsumer = consumer;
         }
-        // 发布登录事件
+        //Spring event 发布登录事件
         publisher.publishEvent(findConsumer);
+        //Rocket MQ 发布事件
+//        loginEventManager.loginEvent(findConsumer);
         return findConsumer;
     }
 
@@ -91,6 +97,19 @@ public class ConsumerServiceImpl implements ConsumerService {
         return consumerMapper.deductCredits(order.getDeductCredits(), order.getConsumerId());
     }
 
+    @Override
+    public int orderCancelInformUnDeductCredits(Order order) {
+        if (order.getDeductCredits() > 0) {
+            return consumerMapper.unDeductCredits(order.getDeductCredits(), order.getConsumerId());
+        } else {
+            return 0;
+        }
+    }
+
+    @Override
+    public int orderFinishInformReceiveCredits(Order order) {
+        return consumerMapper.receiveCredits(order.getReceiveCredits(), order.getConsumerId());
+    }
 
 
 }
