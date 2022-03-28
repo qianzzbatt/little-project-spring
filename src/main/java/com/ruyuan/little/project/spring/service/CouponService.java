@@ -44,4 +44,20 @@ public interface CouponService {
      */
     int usedCoupon(Order order);
 
+    /**
+     * 订单取消，修改优惠券状态
+     *
+     * @param order 订单信息
+     * @return 操作结果
+     */
+    int orderCancelUpdateCouponStatus(Order order);
+
+    /**
+     * 订单完成分发优惠券
+     *
+     * @param order 订单信息
+     * @return 操作结果
+     */
+    int orderFinishReceiverCoupon(Order order);
+
 }

@@ -43,4 +43,39 @@ public interface OrderService {
      */
     int getPageTotal(Order order);
 
+    /**
+     * 订单取消
+     *
+     * @param orderId 订单id
+     * @return 操作结果
+     */
+    int cancelOrder(Integer orderId);
+
+    /**
+     * 评论
+     *
+     * @param orderId 订单id
+     * @param score   评分
+     * @param commentContent 评论
+     * @return 操作结果
+     */
+    int publishComment(Integer orderId, Integer score, String commentContent);
+
+    /**
+     * 订单完成
+     *
+     * @param orderId 订单编号
+     * @return 操作结果
+     */
+    int finishOrder(Integer orderId);
+
+    /**
+     * 订单支付
+     *
+     * @param orderId 订单id
+     * @return 操作结果
+     */
+    int payOrder(Integer orderId);
+
+
 }

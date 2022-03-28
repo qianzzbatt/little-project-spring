@@ -77,6 +77,17 @@ public class ConsumerCoupon {
                 .format(DateTimeFormatter.ofPattern(DateUtils.FULL_TIME_SPLIT_PATTERN));
     }
 
+    public ConsumerCoupon(Order order, Coupon coupon) {
+        this.consumerId = order.getConsumerId();
+        this.consumerName = order.getConsumerName();
+        this.couponId = order.getReceiveCouponId();
+        this.couponName = coupon.getCouponName();
+        this.status = ConsumerCouponStatusEnum.NOT_USED.getStatus();
+        this.amount = coupon.getAmount();
+        this.createTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern(DateUtils.FULL_TIME_SPLIT_PATTERN));
+        this.expireTime = LocalDateTime.of(LocalDate.now().plusDays(coupon.getValidityDays()), LocalTime.MAX)
+                .format(DateTimeFormatter.ofPattern(DateUtils.FULL_TIME_SPLIT_PATTERN));
+    }
 
     public Integer getId() {
         return id;

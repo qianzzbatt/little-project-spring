@@ -77,4 +77,22 @@ public interface ConsumerService {
      */
     int orderCreateInformDeductCredits(Order order);
 
+
+    /**
+     * 订单撤回积分回退
+     *
+     * @param order 订单信息
+     * @return 结果
+     */
+    int orderCancelInformUnDeductCredits(Order order);
+
+    /**
+     * 订单结束通知接收积分
+     *
+     * @param order 订单信息
+     * @return 结果
+     */
+    int orderFinishInformReceiveCredits(Order order);
+
+
 }
