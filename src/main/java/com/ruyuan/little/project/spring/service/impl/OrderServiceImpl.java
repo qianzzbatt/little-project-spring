@@ -172,6 +172,19 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public List<Order> findByOrderStatusAndCounted(String status, String counted) {
+        List<Order> orderList = orderMapper.findByOrderStatusAndCounted(status,counted);
+        if (!CollectionUtils.isEmpty(orderList)){
+            orderList.forEach(order -> {
+                order.setStatusName(OrderStatusEnum.getDescByStatus(order.getStatus()));
+                order.setCourseName(CourseTypeEnum.getNameByCode(order.getCourse()));
+            });
+        }
+        return orderList;
+    }
+
+
+    @Override
     public int finishOrder(Integer orderId) {
         Order order = orderMapper.findById(orderId);
         if (!OrderStatusEnum.PAID.getStatus().equals(order.getStatus())){
@@ -195,6 +208,16 @@ public class OrderServiceImpl implements OrderService {
             }*/
         }
         return updateRow;
+    }
+
+    @Override
+    public int updateCommentStatusList(List<Comment> updateCommentList) {
+        return orderMapper.updateCommentStatusList(updateCommentList);
+    }
+
+    @Override
+    public int updateOrderCountedList(List<Order> updateOrderCountedList) {
+        return orderMapper.updateOrderCountedList(updateOrderCountedList);
     }
 
 }

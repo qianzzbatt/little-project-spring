@@ -100,4 +100,8 @@ public interface ConsumerMapper {
     List<ConsumerCoupon> findCouponByConsumerIdAndStatus(@Param(value = "id") Integer id,
                                                          @Param(value = "status") String status);
 
+    /**
+     * 将过期的用户优惠券状态改为过期
+     */
+    void expireCoupon();
 }

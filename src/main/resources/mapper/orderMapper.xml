@@ -152,6 +152,21 @@
         update t_order set comment_id = #{commentId},status = #{status} where id = #{orderId}
     </update>
 
+    <select id="findByOrderStatusAndCounted" resultMap="orderCommentResultMap">
+        select o.*,
+               c.id comment_id ,
+               c.order_id comment_order_id ,
+               c.score comment_score ,
+               c.comment_content comment_comment_content ,
+               c.status comment_status ,
+               c.consumer_id comment_consumer_id ,
+               c.teacher_id comment_teacher_id ,
+               c.create_time comment_create_time ,
+               c.adopt_time comment_adopt_time ,
+               c.reject_time comment_reject_time
+        from t_order o left join t_comment c on o.comment_id = c.id where o.status = #{status} and o.counted = #{counted}
+    </select>
+
     <update id="updateCommentStatusList" parameterType="List">
         <foreach collection="list" item="item" separator=";">
             update t_comment
@@ -167,4 +182,6 @@
             where id = #{item.id}
         </foreach>
     </update>
+
+
 </mapper>

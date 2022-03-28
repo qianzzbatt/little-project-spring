@@ -1,5 +1,6 @@
 package com.ruyuan.little.project.spring.mapper;
 
+import com.ruyuan.little.project.spring.dto.Comment;
 import com.ruyuan.little.project.spring.dto.Order;
 import org.apache.ibatis.annotations.Param;
 
@@ -80,5 +81,30 @@ public interface OrderMapper {
      * @return 操作结果
      */
     int finishOrder(@Param("orderId") Integer orderId, @Param("status") String status);
+
+    /**
+     * 根据状态和是否已统计查询订单信息
+     *
+     * @param status 状态
+     * @param counted 是否已统计
+     * @return 订单信息
+     */
+    List<Order> findByOrderStatusAndCounted(@Param("status") String status, @Param("counted") String counted);
+
+    /**
+     * 定时任务批量修改评论状态
+     *
+     * @param updateCommentList 需要更新的评论状态集合
+     * @return 结果
+     */
+    int updateCommentStatusList(List<Comment> updateCommentList);
+
+    /**
+     * 定时任务批量修改订单是否已统计字段
+     *
+     * @param updateOrderCountedList 需要更新的订单是否已统计的集合
+     * @return 结果
+     */
+    int updateOrderCountedList(List<Order> updateOrderCountedList);
 
 }

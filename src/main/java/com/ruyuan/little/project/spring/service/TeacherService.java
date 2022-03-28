@@ -44,4 +44,12 @@ public interface TeacherService {
      * @return 查询结果
      */
     int getPageTotal(Teacher teacher);
+
+    /**
+     * 修改教师信息
+     *
+     * @param teacherList 教师列表
+     * @return 操作结果
+     */
+    int updateTeacherList(List<Teacher> teacherList);
 }

@@ -104,7 +104,9 @@
         update t_consumer set credits = credits + #{receiveCredits} where id = #{consumerId}
     </update>
 
-
+    <update id="expireCoupon">
+        update t_consumer_coupon set status = '2' where expire_time &lt; now()
+    </update>
 
 
 </mapper>
