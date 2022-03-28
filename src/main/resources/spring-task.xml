@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/task
+	http://www.springframework.org/schema/task/spring-task.xsd">
+
+    <!-- 定义调用对象-->
+    <bean id="taskService" class="com.ruyuan.little.project.spring.task.TaskService"></bean>
+    <!-- 线程个数（默认为1个，多个任务同一时间内只能串行执行，设置多个则可以并行执行） -->
+    <task:scheduler id="taskScheduler" pool-size="5"></task:scheduler>
+
+    <!-- 开启任务 -->
+    <!-- 配置相关类中方法的执行时间-->
+    <task:scheduled-tasks scheduler="taskScheduler">
+        <!-- 每隔五分钟(5*60*1000)执行一次，fixed-rate单位为毫秒 -->
+        <task:scheduled ref="taskService" method="updateTeacherScore" fixed-rate="300000"/>
+        <!-- 使用cron表达式，每天凌晨十二点一分执行 -->
+        <task:scheduled ref="taskService" method="expireCoupon" cron=" 0 1 0 * * ?"/>
+    </task:scheduled-tasks>
+</beans>

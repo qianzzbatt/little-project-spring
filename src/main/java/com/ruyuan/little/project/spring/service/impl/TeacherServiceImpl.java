@@ -70,4 +70,9 @@ public class TeacherServiceImpl implements TeacherService {
     public int getPageTotal(Teacher teacher) {
         return teacherMapper.getPageTotal(teacher);
     }
+
+    @Override
+    public int updateTeacherList(List<Teacher> teacherList) {
+        return teacherMapper.updateTeacherList(teacherList);
+    }
 }

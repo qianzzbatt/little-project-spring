@@ -1,5 +1,6 @@
 package com.ruyuan.little.project.spring.service;
 
+import com.ruyuan.little.project.spring.dto.Comment;
 import com.ruyuan.little.project.spring.dto.Order;
 
 import java.util.List;
@@ -77,5 +78,29 @@ public interface OrderService {
      */
     int payOrder(Integer orderId);
 
+    /**
+     * 根据状态和是否已统计查询订单信息
+     *
+     * @param status 状态
+     * @param counted 是否已统计
+     * @return 订单信息
+     */
+    List<Order> findByOrderStatusAndCounted(String status, String counted);
+
+    /**
+     * 定时任务批量修改评论状态信息
+     *
+     * @param updateCommentList 更新评论状态列表
+     * @return
+     */
+    int updateCommentStatusList(List<Comment> updateCommentList);
+
+    /**
+     * 定时任务批量修改订单是否已统计字段信息
+     *
+     * @param updateOrderCountedList 更新订单是否已统计字段列表
+     * @return
+     */
+    int updateOrderCountedList(List<Order> updateOrderCountedList);
 
 }
